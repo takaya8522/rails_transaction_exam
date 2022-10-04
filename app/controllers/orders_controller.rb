@@ -14,9 +14,9 @@ class OrdersController < ApplicationController
       @order = current_user.lock.orders.build(order_params)
       @order.save!
       @order.update_total_quantity
+      redirect_to orders_path
     end
     # update_total_quantityメソッドは、注文された発注量を総量に反映するメソッドであり、Orderモデルに定義されています。
-    redirect_to orders_path
   end
 
   private
