@@ -6,9 +6,11 @@ class Order < ApplicationRecord
 
   def update_total_quantity
     self.ordered_lists.each do |line_item|
-      item = Item.find_by(id: line_item.item_id)
-      item.total_quantity += line_item.quantity
-      item.save!
+      ActiveRecord::Base.transaction do
+        item = Item.lock.find_by(id: line_item.item_id)
+        item.total_quantity += line_item.quantity
+        item.save!
+      end
     end
   end
 end
